@@ -2,6 +2,8 @@
 
 # Get the realpath that the installer is coming from
 here="$(realpath "$(dirname "$0")")"
+# Should get the home directory of the user running the script
+pihome=$(getent passwd ${SUDO_USER} | cut -d: -f6)
 
 echo -e "\n****************************************************************"
 echo -e "Welcome to the Moonlight Installer Script for RetroPie"
@@ -30,15 +32,15 @@ case ${NUM} in
         sudo bash ./Install.sh
         ;;
     3)				
-        sudo bash ./Scripts/Pair_moonlight.sh "${here}"
+        sudo bash ./Scripts/Pair_moonlight.sh
         sudo bash ./Install.sh
         ;;
     4)
-        sudo bash ./Scripts/Install_moonlight_menu.sh "${here}"
+        sudo bash ./Scripts/Install_moonlight_menu.sh "${here}" "${pihome}"
         sudo bash ./Install.sh
         ;;	
     5) 
-        sudo bash ./Scripts/Install_Scripts.sh "${here}"
+        sudo bash ./Scripts/Install_Scripts.sh "${here}" "${pihome}"
         sudo bash ./Install.sh
         ;;
     6)  
@@ -47,8 +49,8 @@ case ${NUM} in
         ;;
     7)
         echo -e "\nRemoving all Moonlight launch scripts..."
-        rm -rf /home/pi/RetroPie/roms/moonlight	
-        sudo bash ./Install.sh
+        rm -rf "${pihome}"/RetroPie/roms/moonlight	
+        sudo bash "${here}"/Install.sh
         ;;
     8)
         exit 1
