@@ -1,5 +1,5 @@
 #!/bin/bashi
-set -euo pipefail
+#set -eu pipefail
 SCRIPT=$(basename "$0")
 if [ "${UID}" != 0 ]; then
     echo "Please Run sudo ${SCRIPT}"
