@@ -1,5 +1,10 @@
-#!/bin/bash
+#!/bin/bashi
 
+SCRIPT=$(basename "$0")
+if [ "${UID}" != 0 ]; then
+    echo "Please Run sudo ${SCRIPT}"
+    exit $?
+fi
 # Get the realpath that the installer is coming from
 here="$(realpath "$(dirname "$0")")"
 # Should get the home directory of the user running the script
@@ -21,7 +26,11 @@ echo -e " * 8: Exit"
 read -r NUM
 case ${NUM} in 
     1)
-        sudo bash ./Scripts/Install_moonlight.sh "${here}"
+        if command -v moonlight; then
+            echo -e "\nMoonlight Installed!"
+        else    
+            sudo bash ./Scripts/Install_moonlight.sh "${here}"
+        fi
         sudo bash ./Scripts/Pair_moonlight.sh
         sudo bash ./Scripts/Install_moonlight_menu.sh
         sudo bash ./Scripts/Install_Scripts.sh
