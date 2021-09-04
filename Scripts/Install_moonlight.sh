@@ -1,5 +1,10 @@
 #!/bin/bash
-set -euo pipefail
+
+if command -v moonlight; then
+    echo "Moonlight Already Installed, moving on"
+    exit
+fi
+
 raspbiancodename=$(grep VERSION_CODENAME= /etc/os-release |cut -d= -f)
 
 echo -e "\nAdding Moonlight to Sources List..."

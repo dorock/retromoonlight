@@ -1,14 +1,14 @@
 #!/bin/bashi
-
+set -euo pipefail
 SCRIPT=$(basename "$0")
 if [ "${UID}" != 0 ]; then
     echo "Please Run sudo ${SCRIPT}"
     exit $?
 fi
 # Get the realpath that the installer is coming from
-here="$(realpath "$(dirname "$0")")"
+HERE="$(realpath "$(dirname "$0")")"
 # Should get the home directory of the user running the script
-pihome=$(getent passwd ${SUDO_USER} | cut -d: -f6)
+PIHOME=$(getent passwd ${SUDO_USER} | cut -d: -f6)
 
 echo -e "\n****************************************************************"
 echo -e "Welcome to the Moonlight Installer Script for RetroPie"
@@ -29,15 +29,15 @@ case ${NUM} in
         if command -v moonlight; then
             echo -e "\nMoonlight Installed!"
         else    
-            sudo bash ./Scripts/Install_moonlight.sh "${here}"
+            sudo bash ./Scripts/Install_moonlight.sh "${HERE}"
         fi
         sudo bash ./Scripts/Pair_moonlight.sh
-        sudo bash ./Scripts/Install_moonlight_menu.sh
-        sudo bash ./Scripts/Install_Scripts.sh
-        sudo bash ./Scripts/Install_themes.sh	
+        sudo bash ./Scripts/Install_moonlight_menu.sh "${HERE}" "${PIHOME}"
+        sudo bash ./Scripts/Install_Scripts.sh "${HERE}" "${PIHOME}"
+        sudo bash ./Scripts/Install_themes.sh "${HERE}"	
         ;;
     2)
-        sudo bash ./Scripts/Install_moonlight.sh "${here}"
+        sudo bash ./Scripts/Install_moonlight.sh "${HERE}"
         sudo bash ./Install.sh
         ;;
     3)				
@@ -45,21 +45,21 @@ case ${NUM} in
         sudo bash ./Install.sh
         ;;
     4)
-        sudo bash ./Scripts/Install_moonlight_menu.sh "${here}" "${pihome}"
+        sudo bash ./Scripts/Install_moonlight_menu.sh "${HERE}" "${PIHOME}"
         sudo bash ./Install.sh
         ;;	
     5) 
-        sudo bash ./Scripts/Install_Scripts.sh "${here}" "${pihome}"
+        sudo bash ./Scripts/Install_Scripts.sh "${HERE}" "${PIHOME}"
         sudo bash ./Install.sh
         ;;
     6)  
-        sudo bash ./Scripts/Install_themes.sh "${here}"
+        sudo bash ./Scripts/Install_themes.sh "${HERE}"
         sudo bash ./Install.sh
         ;;
     7)
         echo -e "\nRemoving all Moonlight launch scripts..."
-        rm -rf "${pihome}"/RetroPie/roms/moonlight	
-        sudo bash "${here}"/Install.sh
+        rm -rf "${PIHOME}"/RetroPie/roms/moonlight	
+        sudo bash "${HERE}"/Install.sh
         ;;
     8)
         exit 1
