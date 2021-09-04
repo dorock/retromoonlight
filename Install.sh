@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Get the realpath that the installer is coming from
+here="$(realpath "$(dirname "$0")")"
+
 echo -e "\n****************************************************************"
 echo -e "Welcome to the Moonlight Installer Script for RetroPie"
 echo -e "****************************************************************\n"
@@ -13,33 +16,33 @@ echo -e " * 6: Install Moonlight themes"
 echo -e " * 7: Remove Launch Scripts"
 echo -e " * 8: Exit"
 
-read NUM
-case $NUM in 
+read -r NUM
+case ${NUM} in 
     1)
-        sudo bash ./Scripts/Install_moonlight.sh
+        sudo bash ./Scripts/Install_moonlight.sh "${here}"
         sudo bash ./Scripts/Pair_moonlight.sh
         sudo bash ./Scripts/Install_moonlight_menu.sh
         sudo bash ./Scripts/Install_Scripts.sh
         sudo bash ./Scripts/Install_themes.sh	
         ;;
     2)
-        sudo bash ./Scripts/Install_moonlight.sh
+        sudo bash ./Scripts/Install_moonlight.sh "${here}"
         sudo bash ./Install.sh
         ;;
     3)				
-        sudo bash ./Scripts/Pair_moonlight.sh
+        sudo bash ./Scripts/Pair_moonlight.sh "${here}"
         sudo bash ./Install.sh
         ;;
     4)
-        sudo bash ./Scripts/Install_moonlight_menu.sh
+        sudo bash ./Scripts/Install_moonlight_menu.sh "${here}"
         sudo bash ./Install.sh
         ;;	
     5) 
-        sudo bash ./Scripts/Install_Scripts.sh
+        sudo bash ./Scripts/Install_Scripts.sh "${here}"
         sudo bash ./Install.sh
         ;;
     6)  
-        sudo bash ./Scripts/Install_themes.sh
+        sudo bash ./Scripts/Install_themes.sh "${here}"
         sudo bash ./Install.sh
         ;;
     7)
