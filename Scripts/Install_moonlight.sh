@@ -5,27 +5,17 @@ if command -v moonlight; then
     exit
 fi
 
+
+
+
 raspbiancodename=$(grep VERSION_CODENAME= /etc/os-release |cut -d= -f)
 
-echo -e "\nAdding Moonlight to Sources List..."
+# Stupid two lines, SED is my bane at this point
+#ID=$(grep ID= /etc/os-release |sort|cut -d= -f 2)
 
-if grep -q "deb http://archive.itimmer.nl/raspbian/moonlight ${raspbiancodename} main" /etc/apt/sources.list; then
-    echo -e "NOTE: Moonlight Source Exists - Skipping"
-else
-    echo -e "Adding Moonlight to Sources List"
-    echo "deb http://archive.itimmer.nl/raspbian/moonlight ${raspbiancodename} main" >> /etc/apt/sources.list
-fi
-
-echo -e "\nFetching and installing the GPG key....\n"
-
-if [ -f "${0}"itimmer.gpg ]
-then	
-    echo -e "NOTE: GPG Key Exists - Skipping"
-else		
-    wget http://archive.itimmer.nl/itimmer.gpg -P "${0}"
-    chown pi:pi "${0}"/itimmer.gpg
-    apt-key add "${0}"/itimmer.gpg		
-fi
+# redid this based on https://github.com/moonlight-stream/moonlight-embedded/wiki/Packages
+ID="raspbian"
+curl -1sLf 'https://dl.cloudsmith.io/public/moonlight-game-streaming/moonlight-embedded/setup.deb.sh' | distro=${ID} codename=${raspbiancodename} sudo -E bash
 
 echo -e "\nUpdating Apt Search Repos..."
 apt-get update -y
